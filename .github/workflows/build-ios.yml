@@ -24,13 +24,12 @@ jobs:
       - name: Create IPA
         run: |
           cd ios
-          mkdir -p build/iphoneos
-          mkdir Payload
+          mkdir -p Payload
           cp -r Runner.app Payload
           zip -r mirarr.ipa Payload
 
       - name: Upload binary
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: ios-app
           path: ios/mirarr.ipa
