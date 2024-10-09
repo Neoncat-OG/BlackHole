@@ -4,24 +4,33 @@ on: workflow_dispatch
 
 jobs:
   build_ios:
-    name: Build IOS
+    name: Build iOS
     runs-on: macos-latest
 
     steps:
-          - uses: actions/checkout@v2
-          - uses: subosito/flutter-action@v2
-            with:
-              flutter-version: '3.19.0'
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-          - run: cd ios && flutter build ios --release --no-codesign
-          - name: Create IPA
-            run: |
-              cd ios && mkdir -p build/iphoneos
-              mkdir Payload
-              cp -r Runner.app Payload
-              zip -r mirarr.ipa Payload
-          - name: Upload binary
-            uses: actions/upload-artifact@v4
-            with:
-              name: ios-app
-              path: build/iphoneos/mirarr.ipa
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.19.0'
+
+      - name: Build iOS
+        run: |
+          cd ios
+          flutter build ios --release --no-codesign
+
+      - name: Create IPA
+        run: |
+          cd ios
+          mkdir -p build/iphoneos
+          mkdir Payload
+          cp -r Runner.app Payload
+          zip -r mirarr.ipa Payload
+
+      - name: Upload binary
+        uses: actions/upload-artifact@v4
+        with:
+          name: ios-app
+          path: ios/mirarr.ipa
