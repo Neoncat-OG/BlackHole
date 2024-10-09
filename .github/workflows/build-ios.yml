@@ -29,7 +29,7 @@ jobs:
           zip -r mirarr.ipa Payload
 
       - name: Upload binary
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3
         with:
           name: ios-app
           path: ios/mirarr.ipa
