@@ -1,6 +1,9 @@
 name: Build Final Flutter App
 
-on: workflow_dispatch
+on:
+  workflow_dispatch:
+    branches:
+      - main
 
 jobs:
   build_ios:
@@ -9,7 +12,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
 
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
@@ -26,10 +29,53 @@ jobs:
           cd ios
           mkdir -p Payload
           cp -r Runner.app Payload
-          zip -r mirarr.ipa Payload
+          zip -r blackhole.ipa Payload
 
       - name: Upload binary
         uses: actions/upload-artifact@v3
         with:
           name: ios-app
-          path: ios/mirarr.ipa
+          path: ios/blackhole.ipa
+
+
+
+
+
+name: CI Pipeline
+
+# Controls when the action will run
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+# Define jobs that will run in the workflow
+jobs:
+  build:
+    # The type of machine to run on
+    runs-on: ubuntu-latest
+
+    # Steps to run in the job
+    steps:
+      # Check out the repository code
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Set up the appropriate version of Node.js (if working with JavaScript/Node.js)
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      # Install dependencies
+      - name: Install dependencies
+        run: npm install
+
+      # Run tests
+      - name: Run tests
+        run: npm test
+
+  # You can add additional jobs like deployment or other build steps as needed
