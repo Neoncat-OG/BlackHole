@@ -13,10 +13,7 @@ environment:
 dependencies:
   app_links: ^3.5.0
   audio_service: ^0.18.12
-  audiotagger:
-    git:
-      url: https://github.com/Sangwan5688/Audiotagger
-      ref: 90f2db5
+  audiotagger: ^2.2.1
   # bitsdojo_window: ^0.1.1+1 #For Desktops
   cached_network_image: ^3.3.1
   carousel_slider: ^4.2.1
