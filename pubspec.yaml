@@ -36,8 +36,8 @@ dependencies:
     sdk: flutter
   flutter_lyric:
     git:
-      url: https://github.com/Sangwan5688/flutter_lyric
-      ref: 8cea262
+      url: https://github.com/ozyl/flutter_lyric
+      ref: 6e81641
   get_it: ^7.6.7
   hive: ^2.2.3
   hive_flutter: ^1.1.0
