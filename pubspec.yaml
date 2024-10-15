@@ -59,7 +59,7 @@ dependencies:
   permission_handler: ^11.3.0
   persistent_bottom_nav_bar:
     git:
-      url: https://github.com/Sangwan5688/PersistentBottomNavBar
+      url: https://github.com/BilalShahid13/PersistentBottomNavBar
       ref: ecdadb0
   receive_sharing_intent: ^1.6.7
   share_plus: ^7.2.1
