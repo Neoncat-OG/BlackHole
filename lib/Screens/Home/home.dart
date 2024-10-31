@@ -46,7 +46,8 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:logging/logging.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
+import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
+// import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class HomePage extends StatefulWidget {
@@ -89,25 +90,25 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  // Future<bool> handleWillPop(BuildContext? context) async {
-  //   if (context == null) return false;
-  //   final now = DateTime.now();
-  //   final backButtonHasNotBeenPressedOrSnackBarHasBeenClosed =
-  //       backButtonPressTime == null ||
-  //           now.difference(backButtonPressTime!) > const Duration(seconds: 3);
+  Future<bool> handleWillPop(BuildContext? context) async {
+    if (context == null) return false;
+    final now = DateTime.now();
+    final backButtonHasNotBeenPressedOrSnackBarHasBeenClosed =
+        backButtonPressTime == null ||
+            now.difference(backButtonPressTime!) > const Duration(seconds: 3);
 
-  //   if (backButtonHasNotBeenPressedOrSnackBarHasBeenClosed) {
-  //     backButtonPressTime = now;
-  //     ShowSnackBar().showSnackBar(
-  //       context,
-  //       AppLocalizations.of(context)!.exitConfirm,
-  //       duration: const Duration(seconds: 2),
-  //       noAction: true,
-  //     );
-  //     return false;
-  //   }
-  //   return true;
-  // }
+    if (backButtonHasNotBeenPressedOrSnackBarHasBeenClosed) {
+      backButtonPressTime = now;
+      ShowSnackBar().showSnackBar(
+        context,
+        AppLocalizations.of(context)!.exitConfirm,
+        duration: const Duration(seconds: 2),
+        noAction: true,
+      );
+      return false;
+    }
+    return true;
+  }
 
   void checkVersion() {
     PackageInfo.fromPlatform().then((PackageInfo packageInfo) {
@@ -599,20 +600,19 @@ class _HomePageState extends State<HomePage> {
                     (useDense ? 0 : 10) +
                     (rotated && useDense ? 10 : 0),
                 // confineInSafeArea: false,
-                onItemTapped: onItemTapped,
-                routeAndNavigatorSettings:
-                    CustomWidgetRouteAndNavigatorSettings(
-                  routes: namedRoutes,
-                  onGenerateRoute: (RouteSettings settings) {
-                    if (settings.name == '/player') {
-                      return PageRouteBuilder(
-                        opaque: false,
-                        pageBuilder: (_, __, ___) => const PlayScreen(),
-                      );
-                    }
-                    return HandleRoute.handleRoute(settings.name);
-                  },
-                ),
+                onWillPop: handleWillPop,
+                // navBarConfig: NavBarEssentials(
+                //   routes: namedRoutes,
+                //   onGenerateRoute: (RouteSettings settings) {
+                //     if (settings.name == '/player') {
+                //       return PageRouteBuilder(
+                //         opaque: false,
+                //         pageBuilder: (_, __, ___) => const PlayScreen(),
+                //       );
+                //     }
+                //     return HandleRoute.handleRoute(settings.name);
+                //   },
+                // ),
                 customWidget: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -647,17 +647,21 @@ class _HomePageState extends State<HomePage> {
                 screens: sectionsToShow.map((e) {
                   switch (e) {
                     case 'Home':
-                      return const HomeScreen();
+                      return const CustomNavBarScreen(screen: HomeScreen());
                     case 'Top Charts':
-                      return TopCharts(
-                        pageController: _pageController,
+                      return CustomNavBarScreen(
+                        screen: TopCharts(
+                          pageController: _pageController,
+                        ),
                       );
                     case 'YouTube':
-                      return const YouTube();
+                      return const CustomNavBarScreen(screen: YouTube());
                     case 'Library':
-                      return const LibraryPage();
+                      return const CustomNavBarScreen(screen: LibraryPage());
                     default:
-                      return NewSettingsPage(callback: callback);
+                      return CustomNavBarScreen(
+                        screen: NewSettingsPage(callback: callback),
+                      );
                   }
                 }).toList(),
               ),
