@@ -13,6 +13,7 @@ jobs:
             with:
               flutter-version: '3.19.0'
           - run: ls -la && flutter pub get
+          - run: flutter pub cache repair
           - run: flutter build ios --release --no-codesign
           - name: Create IPA
             run: |
