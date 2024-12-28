@@ -132,8 +132,8 @@ class YouTubeServices {
         return {};
       }
       final String searchResults =
-          "{" + Regex("(\"contents\":\\{.*?\"carouselHeaderRenderer\")", RegexOption.DOT_MATCHES_ALL)
-        .find(response)?.groupValues?.get(0)?.replace(",\"header\":{\"carouselHeaderRenderer\"", "}");
+          RegExp(r'(\"contents\":{.*?}),\"metadata\"', dotAll: true)
+              .firstMatch(response.body)![1]!;
       final Map data = json.decode('{$searchResults}') as Map;
 
       final List result = data['contents']['twoColumnBrowseResultsRenderer']
