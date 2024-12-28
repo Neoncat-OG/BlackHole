@@ -1,6 +1,9 @@
 name: Build Final Flutter App
 
 on: workflow_dispatch
+    push:
+      branches:
+        - main
 
 jobs:
   build_ios:
