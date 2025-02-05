@@ -132,7 +132,7 @@ class YouTubeServices {
         return {};
       }
       final String searchResults =
-          RegExp(r'(\"contents\":{.*?}),\"metadata\"', dotAll: true)
+          RegExp(r'(\"contents\":{.*?}),\"carouselHeaderRenderer\"', dotAll: true)
               .firstMatch(response.body)![1]!;
       final Map data = json.decode('{$searchResults}') as Map;
 
